@@ -18,7 +18,7 @@ class _OnlineStoreState extends State<OnlineStore> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SearchProducts(),
+      home: HomePage(),
     );
   }
 }

@@ -3,106 +3,105 @@ import 'package:ecommerce/Screens/product_details.dart';
 import 'package:flutter/material.dart';
 
 class SearchProducts extends StatefulWidget {
-  const SearchProducts({super.key});
+  const SearchProducts({Key? key}) : super(key: key);
 
   @override
-  State<SearchProducts> createState() => _SearchProductsState();
+  _SearchProductsState createState() => _SearchProductsState();
 }
 
 class _SearchProductsState extends State<SearchProducts> {
   ApiService apiService = ApiService();
   TextEditingController searchController = TextEditingController();
-List<dynamic> dupiList = [];
-  void initState(){
-   Future.delayed(Duration(seconds: 2), () {
-     fetchData();
-    });
+  List<dynamic> filteredList = [];
+
+  @override
+  void initState() {
     super.initState();
+    fetchData();
   }
-    fetchData() {
-  
-        apiService.callAllProducts(); 
-      //  print(apiService.modelList);
-       
-      // print(apiService.modelList.length);
-      // print(apiService.modelList[0].title);
-      
+
+  void fetchData() {
+    apiService.callAllProducts();
   }
+
+  void filterProducts(String query) {
+    setState(() {
+      filteredList = apiService.modelList
+          .where((element) =>
+              element.title.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Search Products'),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search Products',
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                  
-                     setState(() {
-  try {
-    // apiService.modelList = apiService.modelList
-    //     .where((element) =>
-    //         element.title.toLowerCase().contains(searchController.text.toLowerCase()))
-    //     .toList();
-    dupiList = apiService.modelList.where((element) =>  element.title.toLowerCase().contains(searchController.text.toLowerCase())).toList();
-  } catch (e) {
-    // Handle the exception here
-    print('An exception occurred: $e');
-    // Perform any necessary error handling or display an error message
-  }
-});
-
-
-                    },
-                    icon: Icon(Icons.search),
-                  ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: searchController,
+              onChanged: filterProducts,
+              decoration: InputDecoration(
+                hintText: 'Search Products',
+                prefixIcon: Icon(Icons.search),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
-              
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: dupiList.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductDetail(
-                            product: dupiList[index],
-                          ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredList.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 100.0,
+                    child: Card(
+                      elevation: 9.0,
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProductDetail(
+                                product: filteredList[index],
+                              ),
+                            ),
+                          );
+                        },
+                        leading: Image.network(
+                          filteredList[index].image,
+                          width: 90,
+                          height: 60,
+                          fit: BoxFit.cover,
                         ),
-                      );
-                    },
-                    leading: Image.network(dupiList[index].image),
-                    title: Text(dupiList[index].title),
-                    subtitle: Text(dupiList[index].description),
-                    trailing: Text(dupiList[index].price.toString()),
-                  );
-                },
-              ),
-                 ),
-          ],
-        ),
-        // child: Column(
-        //   children: [
-       
-        //     ),
-        //   ],
-        // ),
+                        title: Text(
+                          filteredList[index].title,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        trailing: Text(
+                          '\$${filteredList[index].price.toStringAsFixed(2)}',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
-  
-
 }
