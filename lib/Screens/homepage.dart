@@ -31,6 +31,7 @@ Future.delayed(Duration(seconds: 5), () {
     List<dynamic> data = jsonDecode(response.body);
     modelList = data.map((item) => Product.fromJson(item)).toList();
    print(response.body);
+   print(modelList.length);
     setState(() {
       products = data;
     });

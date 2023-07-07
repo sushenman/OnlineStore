@@ -88,7 +88,7 @@ class ProductDetail extends StatelessWidget {
                           starColor = Colors.grey;
                         }
 
-//The above code is used to display the rating of the product in the product details page using the star icon. The rating is fetched from the API and is displayed in the product details page. 
+//The above code is used to display the rating of the product in the product details page using the star icon. The rating is fetched from the API and is displayed in the product details page. git ad
                         return Icon(
                           starIcon,
                           color: starColor,

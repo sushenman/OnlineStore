@@ -1,6 +1,8 @@
 import 'package:ecommerce/Screens/homepage.dart';
 
 import 'package:flutter/material.dart';
+
+import 'Screens/searchpage.dart';
 void main(){
   runApp(const OnlineStore());
 }
@@ -16,7 +18,7 @@ class _OnlineStoreState extends State<OnlineStore> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: SearchProducts(),
     );
   }
 }
