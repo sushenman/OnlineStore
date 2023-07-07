@@ -1,8 +1,9 @@
+import 'package:ecommerce/Provider/provider.dart';
 import 'package:ecommerce/Screens/homepage.dart';
-
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-import 'Screens/searchpage.dart';
+
 void main(){
   runApp(const OnlineStore());
 }
@@ -16,9 +17,12 @@ class OnlineStore extends StatefulWidget {
 class _OnlineStoreState extends State<OnlineStore> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
+    return ChangeNotifierProvider(
+      create: (context) => ProductProvider() ,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HomePage(),
+      ),
     );
   }
 }
