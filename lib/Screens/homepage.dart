@@ -25,7 +25,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 5), () {
- final productProvider = Provider.of<ProductProvider>(context, listen: false);
+      final productProvider =
+          Provider.of<ProductProvider>(context, listen: false);
       productProvider.fetchProducts();
     });
   }
@@ -168,8 +169,7 @@ class _HomePageState extends State<HomePage> {
                                                     .price
                                                     .toString(),
                                             style: TextStyle(
-                                              color:
-                                                  Color.fromRGBO(4, 4, 4, 1),
+                                              color: Color.fromRGBO(4, 4, 4, 1),
                                             ),
                                           ),
                                         ],
